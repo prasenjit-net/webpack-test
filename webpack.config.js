@@ -3,6 +3,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
+const CopyPlugin = require("copy-webpack-plugin");
+const HtmlMinimizerPlugin = require('html-minimizer-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -30,6 +33,11 @@ module.exports = {
       filename: '[name].[hash].css'
     }),
     new webpack.SourceMapDevToolPlugin(),
+    new CopyPlugin({
+      patterns: [
+        { from: "src/manifest", to: "" },
+      ],
+    }),
   ],
   module: {
     rules: [
@@ -55,6 +63,15 @@ module.exports = {
         test: /\.html$/i,
         loader: 'html-loader',
       },
+    ],
+  },
+  optimization: {
+    minimize: true,
+    minimizer: [
+      // For webpack@5 you can use the `...` syntax to extend existing minimizers (i.e. `terser-webpack-plugin`), uncomment the next line
+      '...',
+      new HtmlMinimizerPlugin(),
+      new CssMinimizerPlugin(),
     ],
   },
 };
