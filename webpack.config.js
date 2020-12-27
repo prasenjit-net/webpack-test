@@ -63,7 +63,16 @@ module.exports = {
         test: /\.html$/i,
         loader: 'html-loader',
       },
+      {
+        test: /\.ts$/,
+        use: 'ts-loader',
+        include: [path.resolve(__dirname, 'src')],
+        // exclude: './node_modules',
+      }
     ],
+  },
+  resolve: {
+    extensions: [ '.tsx', '.ts', '.js' ],
   },
   optimization: {
     minimize: true,
